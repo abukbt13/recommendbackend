@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('company_name');
             $table->string('language');
+            $table->string('type');
+            $table->string('rating');
             $table->string('least_pricing_storage');
             $table->string('storage');
             $table->string('can_host_free');
-            $table->string('rating');
             $table->timestamps();
         });
     }
