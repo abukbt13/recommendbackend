@@ -15,7 +15,7 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users|email',
             'password' => 'required|min:6',
-            'language' => 'required',
+            'language_type' => 'required',
               'occupation' => 'required',
         ]);
         if (count($validator->errors())) {
@@ -28,7 +28,7 @@ class AuthController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password=\Hash::make($request->password);
-        $user->language=$request->language;
+        $user->language_type=$request->language_type;
         $user->occupation=$request->occupation;
         $user->save();
         $token = $user->createToken('token')->plainTextToken;
@@ -47,15 +47,18 @@ class AuthController extends Controller
         ];
         if (auth()->attempt($data)) {
             $user = auth()->user();
-            $token = $user->createToken('token')->plainTextToken;            return response()->json([
+            $token = $user->createToken('token')->plainTextToken;
+            return response()->json([
+                'status' =>'success',
                 'token' => $token,
                 'user' => $user,
                  'message' => 'Successfully logged in',
-            ], 200);
+            ]);
         } else {
             return response()->json([
-                'message' => 'Credentials do not match'
-            ], 200);
+                'status' =>'failed',
+                'error' => 'Enter correct details to log in'
+            ]);
         }
     }
 

@@ -29,9 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('hosting_details',[CompanyController::class,'hosting_details']);
     Route::post('language',[CompanyController::class,'language']);
     //user centered
-    Route::get('recommendlanguage',[\App\Http\Controllers\UserCenteredController::class,'recommendlanguage']);
-    Route::get('languageloved',[\App\Http\Controllers\UserCenteredController::class,'languageloved']);
-    Route::get('languagealsoloveds',[\App\Http\Controllers\UserCenteredController::class,'languagealsoloveds']);
+    Route::get('recommenduser',[\App\Http\Controllers\UserCenteredController::class,'recommenduser']);
 
 });
 Route::get('select_company',[CompanyController::class,'select_company']);
@@ -39,6 +37,11 @@ Route::get('select_language',[CompanyController::class,'select_language']);
 Route::get('showrandom',[CompanyController::class,'showrandom']);
 Route::get('showothers',[CompanyController::class,'showothers']);
 Route::get('besthosting',[CompanyController::class,'besthosting']);
+
+//show companydetails
+Route::get('companydetails/{id}',[CompanyController::class,'companydetails']);
+//search
+Route::get('/search',[\App\Http\Controllers\GeneralUserController::class,'search']);
 
 //show best frontend
 Route::get('bestfrontend',[\App\Http\Controllers\GeneralUserController::class,'bestfrontend']);

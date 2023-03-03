@@ -91,16 +91,16 @@ class CompanyController extends Controller
 
     public function showrandom()
     {
-        $hostings = DB::table('companies')->inRandomOrder()->Limit(1)->get();
+        $hostings = DB::table('companies')->inRandomOrder()->Limit(18)->get();
 
         return response()->json($hostings);
     }
- public function showothers()
-    {
-        $hostings = DB::table('companies')->inRandomOrder()->Limit(15)->get();
-
-        return response()->json($hostings);
-    }
+// public function showothers()
+//    {
+//        $hostings = DB::table('companies')->inRandomOrder()->Limit(15)->get();
+//
+//        return response()->json($hostings);
+//    }
 
     public function showphp()
     {
@@ -160,9 +160,14 @@ class CompanyController extends Controller
         ]);
     }
     public function select_company(){
-        $company=Company::all();
-        return response()->json([
-            'details' => $company
-        ]);
+        $abu=Company::all();
+        return response()->json($abu);
+    }
+    public function companydetails($id){
+        $company=$id;
+            $details=Company::where('id',$company)->get();
+        return response()->json(
+            $details
+        );
     }
 }

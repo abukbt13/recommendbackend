@@ -17,6 +17,9 @@ class GeneralUserController extends Controller
             ->orderBy('max_rating', 'desc')
             ->where('hosting_details.type', '=','backend')
             ->first();
+
+//        $company= Company::all()->where('company_name','=','$company_details.company_name')->first();
+//        $company_id=$company->id;
         return response()->json($bestfrontend);
     }
     public  function bestbackend(){
@@ -29,4 +32,12 @@ class GeneralUserController extends Controller
             ->first();
         return response()->json($bestfrontend);
     }
+    public function search(Request $request){
+        $searchTerm = $request['q'];
+        $results =    Company::where('company_name', 'LIKE', '%' . $searchTerm . '%')->get(); //
+//        dd($results);
+
+    return response()->json($results);
+    }
+
 }
