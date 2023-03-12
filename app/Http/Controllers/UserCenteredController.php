@@ -18,10 +18,12 @@ class UserCenteredController extends Controller
             $user= Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
                 ->select('companies.company_logo', 'hosting_details.company_name')
                 ->where('hosting_details.type', '=', 'frontend')
+                ->limit(3)
                 ->get();
             $other= Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
                 ->select('companies.company_logo', 'hosting_details.company_name')
                 ->where('hosting_details.type', '=', 'backend')
+                ->limit(3)
                 ->get();
             return response()->json([
                 'usercompanies'=>$user,
@@ -30,13 +32,19 @@ class UserCenteredController extends Controller
 
         }
         else{
-            $user= Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
-                ->select('companies.company_logo', 'hosting_details.company_name')
-                ->where('hosting_details.type', $language)
+            $user= Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
+                ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
+                ->where('hosting_details.type','=', $language)
+                ->groupby('hosting_details.company_name')
+                ->orderby('companies.rating','desc')
+                ->limit(3)
                 ->get();
-            $other= Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
-                ->select('companies.company_logo', 'hosting_details.company_name')
+            $other=  Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
+                ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
                 ->where('hosting_details.type','!=', $language)
+                ->groupby('hosting_details.company_name')
+                ->orderby('companies.rating','desc')
+                ->limit(3)
                 ->get();
             return response()->json([
                 'usercompanies'=>$user,

@@ -71,21 +71,48 @@ class CompanyController extends Controller
                     'error' => 'The language exist in that company'
                 ]);
             }
-            $details = new Hosting_detail();
-            $details->user_id = $user_id;
-            $details->company_name = $company_name ;
-            $details->type = $request->type;
-            $details->language = $language;
-            $details->least_pricing_storage = $request->least_pricing_storage;
-            $details->storage = $request->storage;
-            $details->can_host_free = $request->can_host_free;
-            $details->rating = 1;
+            $company_exists = Language::where('company_name',$company_name);
+            if($company_exists){
+                $addrating=Company::where('company_name',$company_name)->first();
+                $rating=$addrating->rating;
+                $addrating->rating=$rating+1;
+                $addrating->update();
 
 
-            $details->save();
-            return response()->json([
-                'details' => $details
-            ]);
+                $details = new Hosting_detail();
+                $details->user_id = $user_id;
+                $details->company_name = $company_name ;
+                $details->type = $request->type;
+                $details->language = $language;
+                $details->least_pricing_storage = $request->least_pricing_storage;
+                $details->storage = $request->storage;
+                $details->can_host_free = $request->can_host_free;
+                $details->rating = 1;
+
+
+                $details->save();
+                return response()->json([
+                    'details' => $details
+                ]);
+            }
+            else{
+                $details = new Hosting_detail();
+                $details->user_id = $user_id;
+                $details->company_name = $company_name ;
+                $details->type = $request->type;
+                $details->language = $language;
+                $details->least_pricing_storage = $request->least_pricing_storage;
+                $details->storage = $request->storage;
+                $details->can_host_free = $request->can_host_free;
+                $details->rating = 1;
+
+
+                $details->save();
+                return response()->json([
+                    'details' => $details
+                ]);
+            }
+
         }
     }
 
@@ -164,10 +191,23 @@ class CompanyController extends Controller
         return response()->json($abu);
     }
     public function companydetails($id){
-        $company=$id;
-            $details=Company::where('id',$company)->get();
-        return response()->json(
-            $details
-        );
+            $details=Company::where('id',$id)->first();
+        return response()->json([
+                'details' => $details,
+            ]);
+    }
+    public function companydetailslanguages($id){
+            $details=Company::where('id',$id)->first();
+            $companydetails=Hosting_detail::where('company_name','=',$details->company_name)->get();
+        return response()->json([
+                'company_details' => $companydetails
+            ]);
+    }
+    public function showmoreCompanydetails($name){
+            $details=Company::where('company_name',$name)->first();
+            $newrating=$details->rating;
+             $details->rating=$newrating+1;
+            $details->update();
+            return response ()->json($details);
     }
 }

@@ -20,8 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('register',[\App\Http\Controllers\AuthController::class,'register']);
+Route::post('verify',[\App\Http\Controllers\AuthController::class,'verify']);
 Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
 Route::post('logout',[\App\Http\Controllers\AuthController::class,'logoutApi']);
+Route::post('request_reset_password',[\App\Http\Controllers\AuthController::class,'request_reset_password']);
+Route::post('reset_password',[\App\Http\Controllers\AuthController::class,'reset_password']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('get-user',[AuthController::class,'user_details']);
@@ -40,6 +43,8 @@ Route::get('besthosting',[CompanyController::class,'besthosting']);
 
 //show companydetails
 Route::get('companydetails/{id}',[CompanyController::class,'companydetails']);
+Route::get('companydetailslanguages/{id}',[CompanyController::class,'companydetailslanguages']);
+Route::get('showmoreCompanydetails/{name}',[CompanyController::class,'showmoreCompanydetails']);
 //search
 Route::get('/search',[\App\Http\Controllers\GeneralUserController::class,'search']);
 
@@ -47,5 +52,6 @@ Route::get('/search',[\App\Http\Controllers\GeneralUserController::class,'search
 Route::get('bestfrontend',[\App\Http\Controllers\GeneralUserController::class,'bestfrontend']);
 Route::get('bestbackend',[\App\Http\Controllers\GeneralUserController::class,'bestbackend']);
 
-//user centered
+//send email notification
+Route::get('sendmail',[\App\Http\Controllers\MailController::class,'index']);
 
