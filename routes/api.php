@@ -40,6 +40,7 @@ Route::get('select_language',[CompanyController::class,'select_language']);
 Route::get('showrandom',[CompanyController::class,'showrandom']);
 Route::get('showothers',[CompanyController::class,'showothers']);
 Route::get('besthosting',[CompanyController::class,'besthosting']);
+Route::get('specificlanguages',[CompanyController::class,'specificlanguages']);
 
 //show companydetails
 Route::get('companydetails/{id}',[CompanyController::class,'companydetails']);

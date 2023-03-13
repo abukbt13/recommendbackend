@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('company_name');
             $table->string('name');
             $table->string('rating');
             $table->timestamps();

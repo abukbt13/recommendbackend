@@ -84,13 +84,15 @@ class AuthController extends Controller
             try {
                 Mail::to($email)->send(new Authenticate($data));
                 return response()->json(       [
-                        'success' =>'Great check your email',
+                        'status' =>'success',
+                        'otp' => $OTP,
                         'message' =>'Check your email verification code'
                     ]);
 
             }catch (Exception $th){
                 return response()->json([
-                    'errors' =>'Invalid data received'
+                    'status' =>'failed',
+                    'error'=>'Invalid email verification '
                 ]);
             }
 

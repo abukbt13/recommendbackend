@@ -138,7 +138,6 @@ class CompanyController extends Controller
     {
         $user_id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
-            'company_name' => 'required',
             'name' => 'required',
         ]);
         if (count($validator->errors())) {
@@ -150,22 +149,22 @@ class CompanyController extends Controller
         $name= $request->name;
         $company_name= $request->company_name;
 
-        $language = Language::where('company_name', $company_name)
-            ->where('name', $name)
-            ->first();
+        $language = Language::where('name', $name)->first();
         if($language){
             return response()->json([
-                'error' => 'Language exist in that company'
+                'status' => 'failed',
+                'message' =>'Language exist enter new language'
             ]);
         }
 
         $language=new Language();
         $language->user_id = $user_id;
-        $language->company_name = $company_name;
         $language->name = $name;
         $language->rating = 1;
         $language->save();
         return response()->json([
+            'status' => 'success',
+            'message' =>'Successfully inserted',
             'details' => $language
         ]);
     }
@@ -208,6 +207,11 @@ class CompanyController extends Controller
             $newrating=$details->rating;
              $details->rating=$newrating+1;
             $details->update();
+            return response ()->json($details);
+    }
+    public function specificlanguages(){
+            $details=Language::all();
+
             return response ()->json($details);
     }
 }
