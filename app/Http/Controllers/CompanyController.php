@@ -17,6 +17,7 @@ class CompanyController extends Controller
         $user_id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
             'company_name' => 'required',
+            'url' => 'required',
             'company_logo' => 'required',
         ]);
         // Check validation failure
@@ -28,6 +29,7 @@ class CompanyController extends Controller
         }
         $company = new Company();
         $company->company_name = $request->company_name;
+        $company->url = $request->url;
         $company->rating = 1;
         $path = $request->file('company_logo')->store('public/company');
         $filename = basename($path);
@@ -191,6 +193,9 @@ class CompanyController extends Controller
     }
     public function companydetails($id){
             $details=Company::where('id',$id)->first();
+            $initialrating= $details->rating;
+            $details->rating=$initialrating+1;
+            $details->update();
         return response()->json([
                 'details' => $details,
             ]);

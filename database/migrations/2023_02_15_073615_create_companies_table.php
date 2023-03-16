@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('company_name')->unique();
             $table->string('company_logo');
+            $table->string('url');
             $table->string('path');
             $table->string('rating');
             $table->timestamps();
