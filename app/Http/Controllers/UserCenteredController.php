@@ -35,16 +35,14 @@ class UserCenteredController extends Controller
             $user= Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
                 ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
                 ->where('hosting_details.type','=', $language)
-                ->groupby('hosting_details.company_name')
                 ->orderby('companies.rating','desc')
-                ->limit(3)
+                ->limit(2)
                 ->get();
             $other=  Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
                 ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
                 ->where('hosting_details.type','!=', $language)
-                ->groupby('hosting_details.company_name')
                 ->orderby('companies.rating','desc')
-                ->limit(3)
+                ->limit(2)
                 ->get();
             return response()->json([
                 'usercompanies'=>$user,

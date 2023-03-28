@@ -20,6 +20,7 @@ class CompanyController extends Controller
             'url' => 'required',
             'company_logo' => 'required',
         ]);
+
         // Check validation failure
         if (count($validator->errors())) {
             return response([
@@ -219,4 +220,18 @@ class CompanyController extends Controller
 
             return response ()->json($details);
     }
-}
+//select c.company_name, c.company_logo, h.language from hosting_details h join companies c on c.company_name=h.company_name where language='php';
+
+    public function show_all_companies($language)
+    {
+
+        $bestfrontend =  DB::table('hosting_details as h')
+                ->join('companies as c', 'c.company_name', '=', 'h.company_name')
+                ->select('c.company_name', 'c.company_logo', 'h.language')
+                ->where('h.language', '=', $language)
+                ->get();
+
+        return response()->json($bestfrontend);
+    }
+
+    }

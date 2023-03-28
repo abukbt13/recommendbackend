@@ -39,5 +39,10 @@ class GeneralUserController extends Controller
 
     return response()->json($results);
     }
+        public function show_all_companies(){
+            $company= Company::all();
+            
+    return response()->json($company);
 
+        }
 }

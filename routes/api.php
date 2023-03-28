@@ -56,3 +56,8 @@ Route::get('bestbackend',[\App\Http\Controllers\GeneralUserController::class,'be
 //send email notification
 Route::get('sendmail',[\App\Http\Controllers\MailController::class,'index']);
 
+//show all companys
+Route::get('show_all_companies',[\App\Http\Controllers\GeneralUserController::class,'show_all_companies']);
+
+//show companies with the language
+Route::get('show_all_companies/{name}',[CompanyController::class,'show_all_companies']);
