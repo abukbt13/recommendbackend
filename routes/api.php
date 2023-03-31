@@ -61,3 +61,7 @@ Route::get('show_all_companies',[\App\Http\Controllers\GeneralUserController::cl
 
 //show companies with the language
 Route::get('show_all_companies/{name}',[CompanyController::class,'show_all_companies']);
+//all_frontend_host
+Route::get('all_frontend_host',[CompanyController::class,'all_frontend_host']);
+//all_backend_host
+Route::get('all_backend_host',[CompanyController::class,'all_backend_host']);

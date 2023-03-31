@@ -227,11 +227,35 @@ class CompanyController extends Controller
 
         $bestfrontend =  DB::table('hosting_details as h')
                 ->join('companies as c', 'c.company_name', '=', 'h.company_name')
-                ->select('c.company_name', 'c.company_logo', 'h.language')
+                ->select('c.company_name','c.id','c.company_logo', 'h.language')
                 ->where('h.language', '=', $language)
                 ->get();
 
         return response()->json($bestfrontend);
     }
 
+
+    public function all_frontend_host()
+    {
+
+        $bestfrontend = Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
+        ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
+        ->where('hosting_details.type','=', 'frontend')
+        ->orderby('companies.rating','desc')
+        ->get();
+
+        return response()->json($bestfrontend);
+    }
+
+    public function all_backend_host()
+    {
+
+        $bestbackend = Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
+        ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
+        ->where('hosting_details.type','=', 'backend')
+        ->orderby('companies.rating','desc')
+        ->get();
+
+        return response()->json($bestbackend);
+    }
     }
