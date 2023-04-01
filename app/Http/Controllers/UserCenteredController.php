@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Company;
 use App\Models\Hosting_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UserCenteredController extends Controller
 {
@@ -97,6 +99,29 @@ public function languagealsoloveds()
         ->get();
 
     return response()->json($hostings);
+}
+public function application(Request $request)
+{
+    $user_id = Auth::user()->id;
+    $validator = Validator::make($request->all(), [
+        'company_name' => 'required',
+        'description' => 'required',
+    ]);
+
+    // Check validation failure
+    if (count($validator->errors())) {
+        return response([
+            'status' => 'failed',
+            'errors' => $validator->errors()
+        ], 422);
+    }
+    $application = new Application();
+    $application->company_name = $request->company_name;
+    $application->description = $request->description;
+    $application->user_id = $user_id;
+    $application->save();
+
+    return response()->json($application);
 }
 
 

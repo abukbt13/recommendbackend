@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('language',[CompanyController::class,'language']);
     //user centered
     Route::get('recommenduser',[\App\Http\Controllers\UserCenteredController::class,'recommenduser']);
+    Route::post('application',[\App\Http\Controllers\UserCenteredController::class,'application']);
 
 });
 Route::get('select_company',[CompanyController::class,'select_company']);
