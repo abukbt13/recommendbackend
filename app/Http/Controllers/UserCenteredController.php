@@ -34,17 +34,20 @@ class UserCenteredController extends Controller
 
         }
         else{
-            $user= Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
-                ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
-                ->where('hosting_details.type','=', $language)
-                ->orderby('companies.rating','desc')
-                ->limit(2)
+            $user = Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
+                ->select('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type', DB::raw('MAX(companies.rating) as rating'))
+                ->where('hosting_details.type', '=', $language)
+                ->groupBy('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type')
+                ->orderBy('rating', 'desc')
+                ->limit(3)
                 ->get();
-            $other=  Company::join('hosting_details','hosting_details.company_name','=','companies.company_name')
-                ->select('companies.company_name','companies.id','companies.company_logo','companies.rating')
-                ->where('hosting_details.type','!=', $language)
-                ->orderby('companies.rating','desc')
-                ->limit(2)
+
+            $other= Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
+                ->select('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type', DB::raw('MAX(companies.rating) as rating'))
+                ->where('hosting_details.type', '!=', $language)
+                ->groupBy('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type')
+                ->orderBy('rating', 'desc')
+                ->limit(3)
                 ->get();
             return response()->json([
                 'usercompanies'=>$user,

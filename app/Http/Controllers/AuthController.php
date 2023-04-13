@@ -17,8 +17,7 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users|email',
             'password' => 'required|min:6',
-            'language_type' => 'required',
-              'occupation' => 'required',
+            'language_type' => 'required'
         ]);
         if (count($validator->errors())) {
             return response([
@@ -34,7 +33,6 @@ class AuthController extends Controller
         $user->otp=$OTP;
         $user->password=\Hash::make($request->password);
         $user->language_type=$request->language_type;
-        $user->occupation=$request->occupation;
         $user->save();
 
             $data = [
@@ -101,8 +99,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required',
-            'password' => 'required',
-            'otp' => 'required',
+            'password' => 'required'
         ]);
         if (count($validator->errors())) {
             return response([
@@ -110,12 +107,9 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-        $OTP=time();
         $email=$request->email;
-        $otp=$request->otp;
         $user = User::where([
-            ['email', '=', $email],
-            ['remember_token', '=', $otp],
+            ['email', '=', $email]
         ])->first();
         if($user){
             $user->password= \Hash::make($request->password);

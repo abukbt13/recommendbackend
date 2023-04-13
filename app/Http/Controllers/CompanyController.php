@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Company;
 use App\Models\Hosting_detail;
 use App\Models\Language;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -233,6 +235,12 @@ class CompanyController extends Controller
 
         return response()->json($bestfrontend);
     }
+    public function edit_company($id)
+    {
+        $company =  Company::where('id', $id)
+        ->get();
+        return response()->json($company);
+    }
 
 
     public function all_frontend_host()
@@ -257,5 +265,20 @@ class CompanyController extends Controller
         ->get();
 
         return response()->json($bestbackend);
+    }
+    public function count()
+    {
+
+       $users=User::count();
+       $company=Company::count();
+       $applications=Application::count();
+
+        return response()->json(
+            [
+                'users'=>$users,
+                'companies'=>$company,
+                'applications'=>$applications
+            ]
+        );
     }
     }
