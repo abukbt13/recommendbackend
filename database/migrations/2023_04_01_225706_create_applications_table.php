@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('description');
             $table->text('company_name');
             $table->text('user_id');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

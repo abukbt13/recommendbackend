@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Company;
 use App\Models\Hosting_detail;
 use Illuminate\Http\Request;
@@ -41,8 +42,14 @@ class GeneralUserController extends Controller
     }
         public function show_all_companies(){
             $company= Company::all();
-            
+
     return response()->json($company);
 
         }
+
+    public function update_company($id) {
+        $app_id=Application::where('id','=',$id);
+        return response()->json($app_id);
+    }
+
 }

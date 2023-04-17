@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('register',[\App\Http\Controllers\AuthController::class,'register']);
 Route::post('verify',[\App\Http\Controllers\AuthController::class,'verify']);
+Route::post('authotp',[\App\Http\Controllers\AuthController::class,'authotp']);
 Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
 Route::post('logout',[\App\Http\Controllers\AuthController::class,'logoutApi']);
 Route::post('request_reset_password',[\App\Http\Controllers\AuthController::class,'request_reset_password']);
@@ -59,6 +60,8 @@ Route::get('sendmail',[\App\Http\Controllers\MailController::class,'index']);
 
 //show all companys
 Route::get('show_all_companies',[\App\Http\Controllers\GeneralUserController::class,'show_all_companies']);
+//edit companys
+Route::post('update_company',[\App\Http\Controllers\GeneralUserController::class,'update_company']);
 
 //show companies with the language
 Route::get('show_all_companies/{name}',[CompanyController::class,'show_all_companies']);
@@ -68,3 +71,7 @@ Route::get('all_frontend_host',[CompanyController::class,'all_frontend_host']);
 //all_backend_host
 Route::get('all_backend_host',[CompanyController::class,'all_backend_host']);
 Route::get('count',[CompanyController::class,'count']);
+//Applications
+Route::get('show_application',[\App\Http\Controllers\AdminController::class,'show_application']);
+//accept application
+Route::get('accept_application/{id}',[\App\Http\Controllers\AdminController::class,'accept_application']);

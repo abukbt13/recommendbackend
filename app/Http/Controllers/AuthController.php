@@ -16,7 +16,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|unique:users|email',
-            'password' => 'required|min:6',
+            'password'=>'required',
+            'c_password' => 'required|same:password',
             'language_type' => 'required'
         ]);
         if (count($validator->errors())) {
@@ -25,34 +26,45 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-        $email = $request['email'];
-        $OTP=rand(1,100000);
-        $user= new User();
-        $user->name=$request->name;
-        $user->email=$request->email;
-        $user->otp=$OTP;
-        $user->password=\Hash::make($request->password);
-        $user->language_type=$request->language_type;
-        $user->save();
+        $password=$request->password;
+        $pattern = "/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/";
+        if (preg_match($pattern, $password)) {
+            $email = $request['email'];
+            $OTP=rand(1,1000000);
 
             $data = [
                 'subject' => 'Account Verification',
                 'body' => 'Registration',
                 'otp' => $OTP
             ];
-
             try {
                 Mail::to($email)->send(new Authenticate($data));
+                $user= new User();
+                $user->name=$request->name;
+                $user->email=$request->email;
+                $user->otp=$OTP;
+                $user->password=\Hash::make($request->password);
+                $user->language_type=$request->language_type;
+                $user->save();
+
                 return response()->json(       [
-                        'success' =>'Great check your email',
-                        'message' =>'Check your email verification code'
-                    ]);
+                    'success' =>'Great check your email',
+                    'message' =>'Check your email verification code'
+                ]);
 
             }catch (Exception $th){
                 return response()->json([
                     'errors' =>'Invalid data received'
                 ]);
             }
+
+        }
+        else{
+            return response([
+                'status' => 'failed',
+                'error' => 'Create a strong password with minimum length of 8 an contain atleast one capital letter and atleast one small letter and a number'
+            ]);
+        }
 
     }
     public function request_reset_password(Request $request)
@@ -216,6 +228,21 @@ class AuthController extends Controller
     {
         if (Auth::check()) {
             Auth::user()->AauthAcessToken()->delete();
+        }
+    }
+    public function authotp(Request $request)
+    {
+        $otp=$request->otp;
+        $user=User::where(['email' => $request->email])->first();
+        if($user->otp=$otp) {
+            return response()->json([
+                'success' => 'Success'
+            ]);
+        }
+        else{
+            return response()->json([
+                'error' => 'The Otp is incorect'
+            ]);
         }
     }
 }
