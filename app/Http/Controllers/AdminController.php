@@ -12,7 +12,7 @@ class AdminController extends Controller
 {
     public  function show_application()
     {
-        $application = Application::all();
+        $application = Application::where('status','0')->get();
         return response()->json($application);
     }
     public  function accept_application($id)

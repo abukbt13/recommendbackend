@@ -235,11 +235,11 @@ class CompanyController extends Controller
 
         return response()->json($bestfrontend);
     }
-    public function edit_company($id)
-    {
-        $company =  Company::where('id', $id)
-        ->get();
-        return response()->json($company);
+    public  function edit_company($id){
+        $company=Company::where('id', $id)->get();
+        return response()->json([
+            'company' =>$company,
+    ]);
     }
 
 

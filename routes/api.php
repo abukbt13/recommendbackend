@@ -65,7 +65,7 @@ Route::post('update_company',[\App\Http\Controllers\GeneralUserController::class
 
 //show companies with the language
 Route::get('show_all_companies/{name}',[CompanyController::class,'show_all_companies']);
-Route::get('edit_company/{id}',[CompanyController::class,'edit_company']);
+Route::get('editit/{id}',[CompanyController::class,'edit_company']);
 //all_frontend_host
 Route::get('all_frontend_host',[CompanyController::class,'all_frontend_host']);
 //all_backend_host
