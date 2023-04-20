@@ -47,9 +47,35 @@ class GeneralUserController extends Controller
 
         }
 
-    public function update_company($id) {
-        $app_id=Application::where('id','=',$id);
-        return response()->json($app_id);
+    public function update_company(Request $request, $id) {
+        $update = Company::find($id);
+        $imagename = "";
+
+        if ($request->hasFile('new_image')) {
+            $path = $request->file('new_image')->store('public/company');
+
+            $oldImagePath = '/app/company/' . $update->company_logo;
+            if (file_exists($oldImagePath)) {
+                File::delete($oldImagePath);
+            }
+
+            $imagename = basename($path);
+        } else {
+            $imagename = $update->company_logo;
+        }
+
+        $update->company_name = $request->company_name;
+        $update->url =$request->url;
+        $update->company_logo = $imagename;
+        $update->update();
+
+        return response()->json('Successfully saved');
     }
+    public  function delete_company($id){
+        $delete=Company::find($id);
+        $delete->delete();
+        return response()->json("deleted successfully");
+    }
+
 
 }

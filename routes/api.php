@@ -61,7 +61,8 @@ Route::get('sendmail',[\App\Http\Controllers\MailController::class,'index']);
 //show all companys
 Route::get('show_all_companies',[\App\Http\Controllers\GeneralUserController::class,'show_all_companies']);
 //edit companys
-Route::post('update_company',[\App\Http\Controllers\GeneralUserController::class,'update_company']);
+Route::post('update_company/{id}',[\App\Http\Controllers\GeneralUserController::class,'update_company']);
+Route::get('delete_company/{id}',[\App\Http\Controllers\GeneralUserController::class,'delete_company']);
 
 //show companies with the language
 Route::get('show_all_companies/{name}',[CompanyController::class,'show_all_companies']);

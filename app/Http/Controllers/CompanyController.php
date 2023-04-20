@@ -237,9 +237,7 @@ class CompanyController extends Controller
     }
     public  function edit_company($id){
         $company=Company::where('id', $id)->get();
-        return response()->json([
-            'company' =>$company,
-    ]);
+        return response()->json($company);
     }
 
 
