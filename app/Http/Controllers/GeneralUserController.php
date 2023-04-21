@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Hosting_detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class GeneralUserController extends Controller
 {
@@ -46,8 +47,17 @@ class GeneralUserController extends Controller
     return response()->json($company);
 
         }
+        public function hosting_details(){
+            $hostingdetails= Hosting_detail::all();
+
+    return response()->json($hostingdetails);
+
+        }
 
     public function update_company(Request $request, $id) {
+
+
+
         $update = Company::find($id);
         $imagename = "";
 
@@ -64,15 +74,40 @@ class GeneralUserController extends Controller
             $imagename = $update->company_logo;
         }
 
-        $update->company_name = $request->company_name;
-        $update->url =$request->url;
-        $update->company_logo = $imagename;
+        $allowed_exts = array("jpg", "jpeg", "png", "gif");
+
+        if (in_array(strtolower(pathinfo($imagename, PATHINFO_EXTENSION)), $allowed_exts)) {
+            $update->company_name = $request->company_name;
+            $update->url =$request->url;
+            $update->company_logo = $imagename;
+            $update->update();
+            return response()->json('Successfully saved');
+        }
+        else {
+            return response()->json('accepted files are jpeg,png,gif,jpg only');
+
+        }
+
+
+    }
+    public function update_hosting_details(Request $request, $id) {
+        $update = Hosting_detail::find($id);
+         $update->company_name = $request->company_name;
+         $update->language = $request->language;
+        $update->type =$request->type;
+        $update->least_pricing_storage =$request->least_pricing_storage;
+        $update->can_host_free =$request->can_host_free;
         $update->update();
 
         return response()->json('Successfully saved');
     }
     public  function delete_company($id){
         $delete=Company::find($id);
+        $delete->delete();
+        return response()->json("deleted successfully");
+    }
+    public  function delete_host_details($id){
+        $delete=Hosting_detail::find($id);
         $delete->delete();
         return response()->json("deleted successfully");
     }

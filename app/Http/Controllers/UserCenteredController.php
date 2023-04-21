@@ -15,16 +15,20 @@ class UserCenteredController extends Controller
 
     public function recommenduser(){
         $language = Auth::user()->language_type;
-        if($language == 'others'){
+        if($language == 'other'){
 
             $user= Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
-                ->select('companies.company_logo', 'hosting_details.company_name')
-                ->where('hosting_details.type', '=', 'frontend')
+                ->select('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type')
+                ->where('hosting_details.type', '=', 'Frontend')
+                ->groupBy('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type')
+                ->orderBy('rating', 'desc')
                 ->limit(3)
                 ->get();
-            $other= Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
-                ->select('companies.company_logo', 'hosting_details.company_name')
+            $other=Hosting_detail::join('companies', 'companies.company_name', '=', 'hosting_details.company_name')
+                ->select('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type')
                 ->where('hosting_details.type', '=', 'backend')
+                ->groupBy('companies.company_name','companies.rating', 'companies.id', 'companies.company_logo', 'hosting_details.type')
+                ->orderBy('rating', 'desc')
                 ->limit(3)
                 ->get();
             return response()->json([

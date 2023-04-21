@@ -16,11 +16,11 @@ class CompanyController extends Controller
 {
     public function store(Request $request)
     {
-        $user_id = Auth::user()->id;
+
         $validator = Validator::make($request->all(), [
             'company_name' => 'required',
             'url' => 'required',
-            'company_logo' => 'required',
+            'company_logo' => 'required|image|mimes:jpeg,png,gif,jpg|max:2048',
         ]);
 
         // Check validation failure
@@ -28,8 +28,9 @@ class CompanyController extends Controller
             return response([
                 'status' => 'failed',
                 'errors' => $validator->errors()
-            ], 422);
+            ]);
         }
+        $user_id = Auth::user()->id;
         $company = new Company();
         $company->company_name = $request->company_name;
         $company->url = $request->url;
@@ -42,11 +43,10 @@ class CompanyController extends Controller
         $company->path = $path;
         $company->save();
         return response()->json([
-            'id' => $filename
+            'message' => 'You have successfully uploaded the company details'
         ]);
 
     }
-
     public function hosting_details(Request $request)
     {
         $user_id = Auth::user()->id;
@@ -238,6 +238,10 @@ class CompanyController extends Controller
     public  function edit_company($id){
         $company=Company::where('id', $id)->get();
         return response()->json($company);
+    }
+ public  function edithostingdeail($id){
+        $hostdetail=Hosting_detail::where('id', $id)->get();
+        return response()->json($hostdetail);
     }
 
 

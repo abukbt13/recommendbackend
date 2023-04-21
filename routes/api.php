@@ -60,13 +60,17 @@ Route::get('sendmail',[\App\Http\Controllers\MailController::class,'index']);
 
 //show all companys
 Route::get('show_all_companies',[\App\Http\Controllers\GeneralUserController::class,'show_all_companies']);
+Route::get('hosting_details',[\App\Http\Controllers\GeneralUserController::class,'hosting_details']);
 //edit companys
 Route::post('update_company/{id}',[\App\Http\Controllers\GeneralUserController::class,'update_company']);
+Route::post('update_hosting_details/{id}',[\App\Http\Controllers\GeneralUserController::class,'update_hosting_details']);
+Route::post('delete_host_details/{id}',[\App\Http\Controllers\GeneralUserController::class,'delete_host_details']);
 Route::get('delete_company/{id}',[\App\Http\Controllers\GeneralUserController::class,'delete_company']);
 
 //show companies with the language
 Route::get('show_all_companies/{name}',[CompanyController::class,'show_all_companies']);
 Route::get('editit/{id}',[CompanyController::class,'edit_company']);
+Route::get('edithostingdeail/{id}',[CompanyController::class,'edithostingdeail']);
 //all_frontend_host
 Route::get('all_frontend_host',[CompanyController::class,'all_frontend_host']);
 //all_backend_host
