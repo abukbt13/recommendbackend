@@ -212,7 +212,6 @@ class AuthController extends Controller
 
         } else {
             return response()->json([
-                'status' =>'failed',
                 'error' => 'Enter correct details to log in'
             ]);
         }
